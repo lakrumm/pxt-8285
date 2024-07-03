@@ -844,7 +844,7 @@ namespace grove {
     
 
     /**
-     * Send data to IFTTT
+     * Send data via Tcp
      */
     //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
@@ -852,12 +852,13 @@ namespace grove {
         let result = 0
         let retry = 2
 
+        basic.showNumber(0)
         // close the previous TCP connection
         if (isWifiConnected) {
             sendAtCmd("AT+CIPCLOSE")
             waitAtResponse("OK", "ERROR", "None", 2000)
         }
-
+        basic.showNumber(1)
         while (isWifiConnected && retry > 0) {
             retry = retry - 1;
             // establish TCP connection
@@ -879,6 +880,7 @@ namespace grove {
 
             if (result == 1) break
         }
+        basic.showNumber(result)
     }
 
 
