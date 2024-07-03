@@ -844,6 +844,47 @@ namespace grove {
         }
     }
 
+    
+
+    /**
+     * Send data to IFTTT
+     */
+    //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
+    //% group="UartWiFi"
+    export function sendTcpRequest(server: string, port: string, msg: string) {
+        let result = 0
+        let retry = 2
+
+        // close the previous TCP connection
+        if (isWifiConnected) {
+            sendAtCmd("AT+CIPCLOSE")
+            waitAtResponse("OK", "ERROR", "None", 2000)
+        }
+
+        while (isWifiConnected && retry > 0) {
+            retry = retry - 1;
+            // establish TCP connection
+            sendAtCmd("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80")
+            result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
+            if (result == 3) continue
+
+            let data = msg
+
+            sendAtCmd("AT+CIPSEND=" + (data.length + 2))
+            result = waitAtResponse(">", "OK", "ERROR", 2000)
+            if (result == 3) continue
+            sendAtCmd(data)
+            result = waitAtResponse("SEND OK", "SEND FAIL", "ERROR", 5000)
+
+            // // close the TCP connection
+            // sendAtCmd("AT+CIPCLOSE")
+            // waitAtResponse("OK", "ERROR", "None", 2000)
+
+            if (result == 1) break
+        }
+    }
+
+
 
     function waitAtResponse(target1: string, target2: string, target3: string, timeout: number) {
         let buffer = ""
