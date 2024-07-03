@@ -704,20 +704,17 @@ namespace grove {
     /**
      * Setup Grove - Uart WiFi V2 to connect to  Wi-Fi
      */
-    //% block="Setup Wifi|TX %txPin|RX %rxPin|Baud rate %baudrate|SSID = %ssid|Password = %passwd"
+    //% block="Setup Wifi|SSID = %ssid|Password = %passwd"
     //% group="UartWiFi"
-    //% txPin.defl=SerialPin.C17
-    //% rxPin.defl=SerialPin.C16
-    //% baudRate.defl=BaudRate.BaudRate115200
-    export function setupWifi(txPin: SerialPin, rxPin: SerialPin, baudRate: BaudRate, ssid: string, passwd: string) {
+    export function setupWifi(ssid: string, passwd: string) {
         let result = 0
 
         isWifiConnected = false
 
         serial.redirect(
-            txPin,
-            rxPin,
-            baudRate
+            SerialPin.C17,
+            SerialPin.C16,
+            BaudRate.BaudRate115200
         )
 
         sendAtCmd("AT")
