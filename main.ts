@@ -851,7 +851,7 @@ namespace grove {
      */
     //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
-    export function sendTcpRequest(server: string, port: string, msg: string) {
+    export function sendTcpMsg(server: string, port: string, msg: string) {
         let result = 0
         let retry = 2
 
@@ -864,7 +864,7 @@ namespace grove {
         while (isWifiConnected && retry > 0) {
             retry = retry - 1;
             // establish TCP connection
-            sendAtCmd("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80")
+            sendAtCmd("AT+CIPSTART=\"TCP\",\""+server+"\","+port)
             result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
             if (result == 3) continue
 
