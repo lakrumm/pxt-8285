@@ -860,19 +860,14 @@ namespace grove {
         while (isWifiConnected && retry > 0) {
             retry = retry - 1;
             // establish TCP connection
-            let cmd = "AT+CIPSTART=\"TCP\",\""+server+"\","+port
-            basic.showString(cmd)
-            basic.pause(10000)
-            sendAtCmd(cmd)
+            sendAtCmd("AT+CIPSTART=\"TCP\",\""+server+"\","+port)
             result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
             if (result == 3) continue
 
-            let data = msg
-
-            sendAtCmd("AT+CIPSEND=" + (data.length + 2))
+            sendAtCmd("AT+CIPSEND=" + (msg.length + 2))
             result = waitAtResponse(">", "OK", "ERROR", 2000)
             if (result == 3) continue
-            sendAtCmd(data)
+            sendAtCmd(msg)
             result = waitAtResponse("SEND OK", "SEND FAIL", "ERROR", 5000)
 
             // // close the TCP connection
@@ -881,9 +876,45 @@ namespace grove {
 
             if (result == 1) break
         }
-        basic.showNumber(result)
-        basic.pause(1000)
     }
+
+    
+
+    /**
+     * Send data via Udp
+     */
+    //% block="Sende UDP-Nachricht|Server %server|Port %port|Nachricht %msg"
+    //% group="UartWiFi"
+    export function sendUdpMsg(server: string, port: string, msg: string) {
+        let result = 0
+        let retry = 2
+
+        // close the previous TCP connection
+        if (isWifiConnected) {
+            sendAtCmd("AT+CIPCLOSE")
+            waitAtResponse("OK", "ERROR", "None", 2000)
+        }
+        while (isWifiConnected && retry > 0) {
+            retry = retry - 1;
+            // establish TCP connection
+            sendAtCmd("AT+CIPSTART=\"UDP\",\""+server+"\","+port)
+            result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
+            if (result == 3) continue
+
+            sendAtCmd("AT+CIPSEND=" + (msg.length + 2))
+            result = waitAtResponse(">", "OK", "ERROR", 2000)
+            if (result == 3) continue
+            sendAtCmd(msg)
+            result = waitAtResponse("SEND OK", "SEND FAIL", "ERROR", 5000)
+
+            // // close the TCP connection
+            // sendAtCmd("AT+CIPCLOSE")
+            // waitAtResponse("OK", "ERROR", "None", 2000)
+
+            if (result == 1) break
+        }
+    }
+
 
 
 
