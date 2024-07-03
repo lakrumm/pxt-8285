@@ -706,8 +706,8 @@ namespace grove {
      */
     //% block="Setup Wifi|TX %txPin|RX %rxPin|Baud rate %baudrate|SSID = %ssid|Password = %passwd"
     //% group="UartWiFi"
-    //% txPin.defl=DigitalPin.C17
-    //% rxPin.defl=DigitalPin.C16
+    //% txPin.defl=SerialPin.C17
+    //% rxPin.defl=SerialPin.C16
     //% baudRate.defl=BaudRate.BaudRate115200
     export function setupWifi(txPin: SerialPin, rxPin: SerialPin, baudRate: BaudRate, ssid: string, passwd: string) {
         let result = 0
