@@ -846,7 +846,7 @@ namespace grove {
     /**
      * Send data via Tcp
      */
-    //% block="Sende TCP-Nachricht V1|Server %server|Port %port|Nachricht %msg"
+    //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
     export function sendTcpMsg(server: string, port: string, msg: string) {
         sendMsg("TCP", server, port, msg)
@@ -867,33 +867,25 @@ namespace grove {
         let result = 0
         let retry = 2
 
-        basic.showNumber(0)
-        basic.pause(1000)
         // close the previous TCP connection
         if (isWifiConnected) {
             sendAtCmd("AT+CIPCLOSE")
             waitAtResponse("OK", "ERROR", "None", 2000)
         }
-        basic.showNumber(1)
-        basic.pause(1000)
+        
         while (isWifiConnected && retry > 0) {
             retry = retry - 1;
             // establish TCP connection
             sendAtCmd("AT+CIPSTART=\"" + messageType + "\",\"" + address + "\"," + port)
             result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
             if (result == 3) continue
-            basic.showNumber(2)
-            basic.pause(1000)
 
             sendAtCmd("AT+CIPSEND=" + (msg.length + 2))
             result = waitAtResponse(">", "OK", "ERROR", 2000)
             if (result == 3) continue
-            basic.showNumber(4)
-            basic.pause(1000)
+            
             sendAtCmd(msg)
             result = waitAtResponse("SEND OK", "SEND FAIL", "ERROR", 5000)
-            basic.showNumber(5)
-            basic.pause(1000)
 
             // // close the TCP connection
             // sendAtCmd("AT+CIPCLOSE")
@@ -901,8 +893,6 @@ namespace grove {
 
             if (result == 1) break
         }
-        basic.showNumber(result)
-        basic.pause(1000)
     }
 
 
