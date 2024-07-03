@@ -846,7 +846,7 @@ namespace grove {
     /**
      * Send data via Tcp
      */
-    //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
+    //% block="Sende TCP-Nachricht V1|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
     export function sendTcpMsg(server: string, port: string, msg: string) {
         sendMsg("TCP", server, port, msg)
