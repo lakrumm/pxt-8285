@@ -853,12 +853,14 @@ namespace grove {
         let retry = 2
 
         basic.showNumber(0)
+        basic.pause(1000)
         // close the previous TCP connection
         if (isWifiConnected) {
             sendAtCmd("AT+CIPCLOSE")
             waitAtResponse("OK", "ERROR", "None", 2000)
         }
         basic.showNumber(1)
+        basic.pause(1000)
         while (isWifiConnected && retry > 0) {
             retry = retry - 1;
             // establish TCP connection
@@ -881,6 +883,7 @@ namespace grove {
             if (result == 1) break
         }
         basic.showNumber(result)
+        basic.pause(1000)
     }
 
 
