@@ -846,7 +846,7 @@ namespace grove {
     /**
      * Send data via Tcp
      */
-    //% block="Sende TCP-Nachricht|Server %server|Port %port|Nachricht %msg"
+    //% block="Sende TCP-Nachricht an|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
     export function sendTcpMsg(server: string, port: string, msg: string) {
         sendMsg("TCP", server, port, msg)
@@ -856,11 +856,23 @@ namespace grove {
     /**
      * Send data via Udp
      */
-    //% block="Sende UDP-Nachricht|Server %server|Port %port|Nachricht %msg"
+    //% block="Sende UDP-Nachricht an|Server %server|Port %port|Nachricht %msg"
     //% group="UartWiFi"
     export function sendUdpMsg(server: string, port: string, msg: string) {
         sendMsg("UDP", server, port, msg)
     }
+      
+
+    /**
+     * Send named value via Tcp
+     */
+    //% block="Sende Messwert per Tcp an |Server %server|Port %port|Kanal %channel|Wert %value"
+    //% group="UartWiFi"
+    export function sendValue(server: string, port: string, channel: string, value: float) {        
+        sendMsg("TCP", server, port, channel + "=" + value)
+    }
+
+    
     
     
     function sendMsg(messageType: string, address: string, port: string, msg: string) {
