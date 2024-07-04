@@ -866,7 +866,7 @@ namespace grove {
     /**
      * Send named value via Tcp
      */
-    //% block="Sende Messwert per Tcp an |Server %server|Port %port|Kanal %channel|Wert %value"
+    //% block="Sende Messwert per Tcp|Server %server|Port %port|Kanal %channel|Wert %value"
     //% group="UartWiFi"
     export function sendValue(server: string, port: string, channel: string, value: number) {        
         sendMsg("TCP", server, port, channel + "=" + value)
