@@ -730,6 +730,39 @@ namespace grove {
             isWifiConnected = true
         }
     }
+    
+    /**
+     * Setup Grove - Uart WiFi V2 to connect to  Wi-Fi
+     */
+    //% block="Setup Wifi (ext)|TX %txPin|RX %rxPin|Baud rate %baudrate|SSID = %ssid|Password = %passwd"
+    //% group="UartWiFi"
+    //% txPin.defl=SerialPin.P15
+    //% rxPin.defl=SerialPin.P1
+    //% baudRate.defl=BaudRate.BaudRate115200
+    export function setupWifiExt(txPin: SerialPin, rxPin: SerialPin, baudRate: BaudRate, ssid: string, passwd: string) {
+        let result = 0
+
+        isWifiConnected = false
+
+        serial.redirect(
+            txPin,
+            rxPin,
+            baudRate
+        )
+
+        sendAtCmd("AT")
+        result = waitAtResponse("OK", "ERROR", "None", 1000)
+
+        sendAtCmd("AT+CWMODE=1")
+        result = waitAtResponse("OK", "ERROR", "None", 1000)
+
+        sendAtCmd(`AT+CWJAP="${ssid}","${passwd}"`)
+        result = waitAtResponse("WIFI GOT IP", "ERROR", "None", 20000)
+
+        if (result == 1) {
+            isWifiConnected = true
+        }
+    }
 
     /**
      * Check if Grove - Uart WiFi V2 is connected to Wifi
