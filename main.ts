@@ -906,6 +906,29 @@ namespace grove {
     }
 
     
+
+
+    /**
+     * get soil moisture value (0~100)
+     * @param soilmoisturepin describe parameter here, eg: AnalogPin.P1
+     */
+    //% blockId="readsoilmoisture" block="Bodenfeuchte (0~100) an pin %soilhumiditypin"
+    //% group="Bodenfeuchte"
+    export function ReadSoilHumidity(soilmoisturepin: AnalogPin): number {
+        let voltage = 0;
+        let soilmoisture = 0;
+        voltage = pins.map(
+            pins.analogReadPin(soilmoisturepin),
+            0,
+            1023,
+            0,
+            100
+        );
+        soilmoisture = voltage;
+        return Math.round(soilmoisture)
+    }
+
+    
     
     
     function sendMsg(messageType: string, address: string, port: string, msg: string) {
